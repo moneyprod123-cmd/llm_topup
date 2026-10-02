@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Up Game - LLM TOPUP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Khmer -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gaming: {
+                            dark: '#080C14',
+                            card: '#111827',
+                            border: '#1F2937',
+                            accent: '#F59E0B',
+                            cyan: '#06B6D4',
+                            purple: '#8B5CF6'
+                        }
+                    },
+                    fontFamily: {
+                        khmer: ['Kantumruy Pro', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+            background-color: #080C14;
+            color: #F3F4F6;
+        }
+
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .game-card-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .game-card-item:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 25px -5px rgba(245, 158, 11, 0.25);
+            border-color: #F59E0B !important;
+        }
+
+        .game-card-item.active {
+            border-color: #F59E0B !important;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(17, 24, 39, 0.9) 100%) !important;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .package-card {
+            transition: all 0.25s ease;
+        }
+
+        .package-card:hover {
+            transform: translateY(-3px);
+            border-color: #06B6D4;
+        }
+
+        .package-card.active {
+            border-color: #F59E0B !important;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(17, 24, 39, 0.9) 100%) !important;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+        }
+
+        .payment-card.active {
+            border-color: #06B6D4 !important;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(17, 24, 39, 0.9) 100%) !important;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        .glow-bg {
+            animation: pulse-glow 4s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+
+    <!-- Background Glows -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none glow-bg"></div>
+    <div class="fixed bottom-10 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none glow-bg"></div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3 cursor-pointer transform hover:scale-105 transition-transform" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                    <div class="flex flex-col justify-center">
+                        <span class="text-2xl font-extrabold bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent leading-tight">LLM TOPUP</span>
+                    </div>
+                </div>
+
+                <nav class="hidden md:flex items-center space-x-8 font-semibold">
+                    <a href="#games" class="hover:text-amber-400 transition-colors">ហ្គេមទាំងអស់</a>
+                    <a href="#how-to" class="hover:text-amber-400 transition-colors">របៀបបញ្ចូល</a>
+                    <a href="#contact" class="hover:text-amber-400 transition-colors">ទំនាក់ទំនង</a>
+                </nav>
+
+                <div class="hidden sm:flex items-center gap-3">
+                    <a href="https://t.me/novsmos12" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold shadow-lg shadow-sky-500/25 transition-all transform hover:-translate-y-0.5">
+                        <i class="fa-brands fa-telegram text-xl"></i>
+                        <span>Telegram Support</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main class="py-10 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Step 1: Select Game -->
+            <div id="games" class="mb-12">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="w-9 h-9 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black font-extrabold flex items-center justify-center text-lg shadow-md shadow-amber-500/20">1</span>
+                    <h2 class="text-2xl font-bold tracking-wide">ជ្រើសរើសហ្គេម (Select Game)</h2>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-5" id="game-selection-grid"></div>
+            </div>
+
+            <!-- Form Panel -->
+            <div class="glass-panel border border-gray-800 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Step 2: Account Info -->
+                <div class="mb-12">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="w-9 h-9 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black font-extrabold flex items-center justify-center text-lg shadow-md shadow-amber-500/20">2</span>
+                        <h2 class="text-xl font-bold">ព័ត៌មានគណនី (Account Info)</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2" id="id-label">
+                                Player ID <span class="text-amber-500">*</span>
+                            </label>
+                            <input type="text" id="player-id" placeholder="ឧទាហរណ៍: 123456789" class="w-full bg-gray-900/90 border border-gray-700/80 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                លេខទូរស័ព្ទ / Telegram Username <span class="text-amber-500">*</span>
+                            </label>
+                            <input type="text" id="customer-contact" placeholder="ឧទាហរណ៍: 012345678 ឬ @username" class="w-full bg-gray-900/90 border border-gray-700/80 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Packages -->
+                <div class="mb-12">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <span class="w-9 h-9 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black font-extrabold flex items-center justify-center text-lg shadow-md shadow-amber-500/20">3</span>
+                            <h2 class="text-xl font-bold">ជ្រើសរើសកញ្ចប់ (Select Package)</h2>
+                        </div>
+                        <span id="current-game-title" class="text-sm font-bold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">Free Fire Diamonds</span>
+                    </div>
+
+                    <div id="packages-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+                </div>
+
+                <!-- Step 4: Payment -->
+                <div class="mb-12">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="w-9 h-9 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black font-extrabold flex items-center justify-center text-lg shadow-md shadow-amber-500/20">4</span>
+                        <h2 class="text-xl font-bold">វិធីសាស្ត្រទូទាត់ប្រាក់ (Payment Method)</h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                        <div onclick="selectPayment('aba')" id="pay-aba" class="payment-card active cursor-pointer border-2 border-gray-800 bg-gray-900/80 p-5 rounded-2xl flex flex-col items-center justify-center gap-2 text-center">
+                            <div class="w-12 h-12 rounded-xl bg-blue-950/80 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl font-black">ABA</div>
+                            <span class="text-sm font-bold">ABA PAY</span>
+                        </div>
+                        <div onclick="selectPayment('wing')" id="pay-wing" class="payment-card cursor-pointer border-2 border-gray-800 bg-gray-900/80 p-5 rounded-2xl flex flex-col items-center justify-center gap-2 text-center">
+                            <div class="w-12 h-12 rounded-xl bg-lime-950/80 border border-lime-500/30 flex items-center justify-center text-lime-400 text-xl font-black">WING</div>
+                            <span class="text-sm font-bold">Wing Money</span>
+                        </div>
+                        <div onclick="selectPayment('acleda')" id="pay-acleda" class="payment-card cursor-pointer border-2 border-gray-800 bg-gray-900/80 p-5 rounded-2xl flex flex-col items-center justify-center gap-2 text-center">
+                            <div class="w-12 h-12 rounded-xl bg-amber-950/80 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl font-black">ACLE</div>
+                            <span class="text-sm font-bold">ACLEDA</span>
+                        </div>
+                        <div onclick="selectPayment('telegram')" id="pay-telegram" class="payment-card cursor-pointer border-2 border-gray-800 bg-gray-900/80 p-5 rounded-2xl flex flex-col items-center justify-center gap-2 text-center">
+                            <div class="w-12 h-12 rounded-xl bg-sky-950/80 border border-sky-500/30 flex items-center justify-center text-sky-400 text-2xl font-black">
+                                <i class="fa-brands fa-telegram"></i>
+                            </div>
+                            <span class="text-sm font-bold">Telegram Chat</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button onclick="processOrder()" class="w-full py-5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:brightness-110 text-black font-extrabold text-lg shadow-xl shadow-amber-500/20 flex items-center justify-center gap-3 transform hover:-translate-y-0.5 transition-all">
+                    <i class="fa-brands fa-telegram text-2xl"></i>
+                    <span>បញ្ជូនការបញ្ជាទិញតាម Telegram</span>
+                </button>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Script Logic -->
+    <script>
+        const gamesData = [
+            {
+                id: 'ff',
+                name: 'Free Fire',
+                publisher: 'Player ID Topup',
+                badge: '🔥 Popular',
+                img: 'https://play-lh.googleusercontent.com/cK-U0_B9GrnSy26SNISDuvU_hL4VggyqJ1J5V2oiuyVEfiGo7fzegdBjk0ejXPg3PKK5sPwumdLBbWv8KkBKLQ=w240-h480-rw',
+                packages: [
+                    { id: 'ff-100', title: '100 Diamonds', amount: '100 💎', priceUSD: 1.00, priceKHR: '4,100៛' },
+                    { id: 'ff-310', title: '310 Diamonds', amount: '310 💎', priceUSD: 3.00, priceKHR: '12,300៛' },
+                    { id: 'ff-520', title: '520 Diamonds', amount: '520 💎', priceUSD: 5.00, priceKHR: '20,500៛' },
+                    { id: 'ff-1060', title: '1060 Diamonds', amount: '1060 💎', priceUSD: 10.00, priceKHR: '41,000៛' },
+                    { id: 'ff-weekly', title: 'Weekly Pass', amount: 'Weekly Pass 🎫', priceUSD: 2.20, priceKHR: '9,000៛' }
+                ]
+            },
+            {
+                id: 'roblox',
+                name: 'Roblox',
+                publisher: 'Username / ID',
+                badge: '⚡ Hot',
+                img: 'https://m.media-amazon.com/images/I/21aoUPG3svL.png',
+                packages: [
+                    { id: 'rbx-80', title: '80 Robux', amount: '80 R$', priceUSD: 1.00, priceKHR: '4,100៛' },
+                    { id: 'rbx-400', title: '400 Robux', amount: '400 R$', priceUSD: 5.00, priceKHR: '20,500៛' },
+                    { id: 'rbx-800', title: '800 Robux', amount: '800 R$', priceUSD: 10.00, priceKHR: '41,000៛' },
+                    { id: 'rbx-1700', title: '1700 Robux', amount: '1700 R$', priceUSD: 20.00, priceKHR: '82,000៛' }
+                ]
+            },
+            {
+                id: 'pubg',
+                name: 'PUBG Mobile',
+                publisher: 'Player ID Topup',
+                badge: '⚡ Hot',
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwkhV_1LQx92MLwKn07J0oCBNfICjGr0DxLbKOYpjcH1zRefIws1k_T0hv&s=10',
+                packages: [
+                    { id: 'pubg-60', title: '60 UC', amount: '60 UC 🪙', priceUSD: 0.99, priceKHR: '4,100៛' },
+                    { id: 'pubg-325', title: '325 UC', amount: '325 UC 🪙', priceUSD: 4.99, priceKHR: '20,500៛' },
+                    { id: 'pubg-660', title: '660 UC', amount: '660 UC 🪙', priceUSD: 9.99, priceKHR: '41,000៛' },
+                    { id: 'pubg-1800', title: '1800 UC', amount: '1800 UC 🪙', priceUSD: 24.99, priceKHR: '102,500៛' }
+                ]
+            },
+            {
+                id: 'mlbb',
+                name: 'Mobile Legends',
+                publisher: 'User ID & Zone ID',
+                badge: '🔥 Popular',
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEYWrditcBgjVHutToZgFcdJ4LJ_Hx2hxzDu0yA5DcaJsGqxH-S74u8mAT&s=10',
+                packages: [
+                    { id: 'ml-86', title: '86 Diamonds', amount: '86 💎', priceUSD: 1.50, priceKHR: '6,200៛' },
+                    { id: 'ml-172', title: '172 Diamonds', amount: '172 💎', priceUSD: 3.00, priceKHR: '12,300៛' },
+                    { id: 'ml-257', title: '257 Diamonds', amount: '257 💎', priceUSD: 4.50, priceKHR: '18,500៛' },
+                    { id: 'ml-pass', title: 'Weekly Pass', amount: 'Weekly Pass 🎫', priceUSD: 2.00, priceKHR: '8,200៛' }
+                ]
+            }
+        ];
+
+        let selectedGame = gamesData[0];
+        let selectedPackage = gamesData[0].packages[0];
+        let selectedPaymentMethod = 'ABA PAY';
+
+        window.onload = function() {
+            renderGameGrid();
+            selectGame('ff');
+        };
+
+        function renderGameGrid() {
+            const grid = document.getElementById('game-selection-grid');
+            grid.innerHTML = '';
+
+            gamesData.forEach(game => {
+                const cardHtml = `
+                    <div onclick="selectGame('${game.id}')" id="game-card-${game.id}" class="game-card-item cursor-pointer p-4 rounded-2xl bg-gray-900/90 border border-gray-800 flex items-center justify-between relative overflow-hidden group">
+                        <div class="flex items-center gap-3.5 z-10">
+                            <img src="${game.img}" alt="${game.name}" class="w-14 h-14 rounded-2xl object-cover border border-gray-700/60 shadow-md">
+                            <div>
+                                ${game.badge ? `<span class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold inline-block mb-1">${game.badge}</span>` : ''}
+                                <h3 class="font-bold text-white text-base group-hover:text-amber-400 transition-colors">${game.name}</h3>
+                                <p class="text-xs text-gray-400">${game.publisher}</p>
+                            </div>
+                        </div>
+                        <div class="active-check hidden w-6 h-6 rounded-full bg-amber-500 text-black items-center justify-center font-bold text-xs shadow-lg">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        function selectGame(gameId) {
+            selectedGame = gamesData.find(g => g.id === gameId);
+            selectedPackage = selectedGame.packages[0];
+
+            document.querySelectorAll('.game-card-item').forEach(card => {
+                card.classList.remove('active');
+                card.querySelector('.active-check').classList.add('hidden');
+                card.querySelector('.active-check').classList.remove('flex');
+            });
+
+            const activeCard = document.getElementById(`game-card-${gameId}`);
+            activeCard.classList.add('active');
+            activeCard.querySelector('.active-check').classList.remove('hidden');
+            activeCard.querySelector('.active-check').classList.add('flex');
+
+            document.getElementById('current-game-title').innerText = `${selectedGame.name} Packages`;
+            document.getElementById('id-label').innerHTML = `${selectedGame.name} ID <span class="text-amber-500">*</span>`;
+
+            renderPackages();
+        }
+
+        function renderPackages() {
+            const grid = document.getElementById('packages-grid');
+            grid.innerHTML = '';
+
+            selectedGame.packages.forEach(pkg => {
+                const isActive = pkg.id === selectedPackage.id;
+                const activeClass = isActive ? 'package-card active' : 'border-gray-800';
+
+                const cardHtml = `
+                    <div onclick="selectPackage('${pkg.id}')" class="${activeClass} cursor-pointer border-2 bg-gray-900/80 p-5 rounded-2xl relative flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 font-medium block mb-1">${pkg.title}</span>
+                            <h4 class="text-lg font-extrabold text-amber-400">${pkg.amount}</h4>                         </div>                         <div class="mt-5 pt-3 border-t border-gray-800/80 flex items-center justify-between">                             <span class="text-base font-black text-white">$${pkg.priceUSD.toFixed(2)}</span>
+                            <span class="text-xs font-semibold text-gray-400">${pkg.priceKHR}</span>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        function selectPackage(pkgId) {
+            selectedPackage = selectedGame.packages.find(p => p.id === pkgId);
+            renderPackages();
+        }
+
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-card').forEach(el => el.classList.remove('active'));
+            document.getElementById(`pay-${method}`).classList.add('active');
+            
+            if(method === 'aba') selectedPaymentMethod = 'ABA PAY';
+            else if(method === 'wing') selectedPaymentMethod = 'Wing Money';
+            else if(method === 'acleda') selectedPaymentMethod = 'ACLEDA';
+            else if(method === 'telegram') selectedPaymentMethod = 'Telegram Chat';
+        }
+
+        function processOrder() {
+            const playerId = document.getElementById('player-id').value.trim();
+            const contact = document.getElementById('customer-contact').value.trim();
+
+            if (!playerId || !contact) {
+                alert('សូមបំពេញ ID ហ្គេម និងលេខទូរស័ព្ទ ឬ Telegram Username របស់អ្នកជាមុនសិន!');
+                return;
+            }
+
+            const botToken = '8933587948:AAFLt5tl-f62s4_TZU_BB0Ux_VHkTQ1se8Y'; 
+            
+            // 📌 ID ទាំងពីរ (Channel ID និង Group Chat ID)
+            const chats = [
+                '-1004353168359', // ID របស់ Telegram Channel
+                '-1004389417124'  // ID របស់ Telegram Group Chat[cite: 4]
+            ];
+
+            const messageText = 
+                `🛒 *ការបញ្ជាទិញថ្មី (LLM TOPUP)*\n\n` +
+                `🎮 ហ្គេម: *${selectedGame.name}*\n` +
+                `🆔 Game ID: \`${playerId}\`\n` +
+                `📦 កញ្ចប់: *${selectedPackage.amount}* (${selectedPackage.title})\n` +
+                `💰 តម្លៃ: *$${selectedPackage.priceUSD.toFixed(2)}* (${selectedPackage.priceKHR})\n` +
+                `💳 ទូទាត់តាម: *${selectedPaymentMethod}*\n` +
+                `📞 ទំនាក់ទំនង: \`${contact}\``;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            
+            // ផ្ញើទៅកាន់ទីតាំងនីមួយៗដាច់ដោយឡែកពីគ្នា ដោយប្រើ Promise.allSettled ដើម្បីកុំឱ្យរាំងស្ទះគ្នា
+            const promises = chats.map(chatId => {
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: messageText,
+                        parse_mode: 'Markdown'
+                    })
+                }).then(res => res.json());
+            });
+
+            Promise.allSettled(promises)
+                .then(results => {
+                    alert('ការបញ្ជាទិញរបស់អ្នកត្រូវបានបញ្ជូនរួចរាល់!');
+                    document.getElementById('player-id').value = '';
+                    document.getElementById('customer-contact').value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('មានបញ្ហាប្រព័ន្ធក្នុងការភ្ជាប់ទៅកាន់ Telegram!');
+                });
+        }
+    </script>
+</body>
+</html>
